@@ -1,0 +1,142 @@
+/* Основные стили */
+.home-container {
+  line-height: 1.6;
+}
+
+/* Хедер */
+.home-header {
+  text-align: center;
+  background: #007bff;
+  color: white;
+  padding: 50px 20px;
+}
+
+.home-header h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.home-header p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.action-button {
+  background: #ff9800;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.action-button:hover {
+  background: #e68900;
+}
+
+/* Секція "Про компанію" */
+.about-section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.about-section img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+/* Секція послуг */
+.services-section {
+  padding: 50px 20px;
+  background-color: #e68900;  
+  text-align: center;
+}
+
+.services-section .service-cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.service-card {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 300px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+  transform: scale(1.05);
+}
+
+.service-card img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+/* Секція переваг */
+.advantages-section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.advantages-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.advantages-section ul li {
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
+
+/* Відгуки */
+.testimonials-section {
+  padding: 50px 20px;
+  text-align: center;
+  background-color: #fafafa;
+}
+
+.testimonials-section .testimonial {
+  margin: 20px 0;
+  font-style: italic;
+  font-size: 1.2rem;
+}
+
+.testimonials-section .testimonial span {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Форма зворотного зв’язку */
+.contact-section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.contact-form {
+  flex-direction: column;
+  gap: 15px;
+  margin: 0 auto;
+}
+
+/* Футер */
+.home-footer {
+  text-align: center;
+  padding: 20px;
+  background: #333;
+  color: white;
+  margin-top: 20px;
+}
