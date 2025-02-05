@@ -20,7 +20,7 @@ const Home = () => {
 
       {/* Секція "Про компанію" */}
       <section className="about-section">
-        <h2>{useTranslation().t('homepage.btnContactUs')}</h2>
+        <h2>{useTranslation().t('homepage.aboutCompany')}</h2>
         <p>{useTranslation().t('homepage.companyDescription')}</p>
         <img src={cardImage} alt="Про компанію" />
       </section>

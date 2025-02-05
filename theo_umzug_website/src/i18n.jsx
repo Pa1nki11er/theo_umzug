@@ -41,6 +41,12 @@ const resources = {
         inputContactUsMessage: "Повідомлення",
         inputContactUsSend: "Відправити",
       },
+      calculator: {
+        welcome:"Тут ви можете прорахувати вартість вашого замовлення!",
+        inputCalculatorDistance: "Відстань",
+        inputCalculatorWeight: "Вага",
+        inputCalculatorVolume: "Об'єм",
+      },
     },
   },
   en: {

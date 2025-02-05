@@ -1,8 +1,6 @@
 import React from 'react';
 import './Contact.css'; // Importing styles
-import emailIcon from './img/email-svgrepo-com.svg';
-import phoneIcon from './img/phone-svgrepo-com.svg';
-import Icon from './../../../icon/Icon';
+import Icon from './../../../icon/Icon.jsx';
 import { Button, Dropdown, Space, Input,  Flex } from 'antd';
 const { TextArea } = Input;
 const Contact = () => {
@@ -15,7 +13,7 @@ const Contact = () => {
         <h1 className='contact-text-h1'>Напишіть нам!</h1>
         <div className='contact-information-line'>
           <Icon 
-            path={emailIcon} 
+            iconName={"email"} 
             alt="Email icon" 
             style={{ width: '50px', height: '50px' }} 
           />
@@ -23,7 +21,7 @@ const Contact = () => {
         </div>
         <div className='contact-information-line'>
           <Icon 
-            path={phoneIcon} 
+            iconName={"phone"} 
             alt="Email icon" 
             style={{ width: '50px', height: '50px' }} 
           />

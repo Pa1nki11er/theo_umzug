@@ -3,24 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@base-ui-components/react": "^1.0.0-alpha.5",
+    "@mui/base": "^5.0.0-beta.69",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "ajv": "^8.17.1",
     "antd": "^5.22.2",
-    "i18next": "^24.2.1",
+    "i18next": "^24.1.0",
     "i18next-browser-languagedetector": "^8.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-form-wizard-component": "^0.2.7",
     "react-i18next": "^15.4.0",
     "react-router-dom": "^7.0.1",
-    "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "eslintConfig": {
     "extends": [
@@ -41,6 +43,8 @@
     ]
   },
   "devDependencies": {
-    "typescript": "^5.7.3"
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0"
   }
 }

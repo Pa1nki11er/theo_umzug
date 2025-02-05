@@ -2,8 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { GlobalOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Space } from 'antd';
-import Home from './pages/home/Home.js';
-import Contact from './pages/contact/Contact.js';
+import Home from './pages/home/Home.jsx';
+import Contact from './pages/contact/Contact.jsx';
+import NewOrder from './pages/order/NewOrder.jsx';
+import Calculator from './pages/calculator/Calculator.jsx';
 import './Navigation.css';
 
 import { useTranslation } from 'react-i18next';
@@ -22,8 +24,6 @@ const Navigation = () => {
     { key: '3', label: <span>Українська</span>, onClick: () => changeLanguage('uk') },
     { key: '4', label: <span>Русский</span>, onClick: () => changeLanguage('ru') },
   ];
-  const Order = () => <h1>{useTranslation().t('navigation.order')}</h1>;
-  const Calculator = () => <h1>{useTranslation().t('navigation.calculator')}</h1>;
 
   return (
     <Router>
@@ -53,7 +53,7 @@ const Navigation = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/order" element={<Order />} />
+        <Route path="/order" element={<NewOrder />} />
         <Route path="/contacts" element={<Contact />} />
         <Route path="/calculator" element={<Calculator />} />
       </Routes>
