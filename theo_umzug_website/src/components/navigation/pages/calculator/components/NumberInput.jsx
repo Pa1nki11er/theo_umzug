@@ -36,9 +36,7 @@ const NumberInput = ({ title, iconName }) => {
             <NumberField.Decrement className={styles.Decrement}>
               <MinusIcon />
             </NumberField.Decrement>
-            {/* Attach the ref to the input */}
             <NumberField.Input className={styles.Input} ref={inputRef} />
-            {/* Correctly pass the function */}
             <NumberField.Increment className={styles.Increment} onClick={showValue}>
               <PlusIcon />
             </NumberField.Increment>

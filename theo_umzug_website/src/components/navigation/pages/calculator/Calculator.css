@@ -12,6 +12,16 @@
     border-radius: 5px;
     flex-direction: column;
 }
+
+.personal-container 
+{
+
+}
+
+.input-field{
+    width: 200px;
+}
+
 .calculator-welcome{
     text-align: center;
 }
