@@ -3,7 +3,7 @@ import { NumberField } from "@base-ui-components/react/number-field";
 import styles from "./index.module.css";
 import Icon from "../../../../icon/Icon.jsx";
 
-const NumberInput = ({ title, iconName }) => {
+const NumberInput = ({ title, iconName, value }) => {
   const id = React.useId();
   const inputRef = React.useRef(null); // Create a ref for the input
 
@@ -26,7 +26,7 @@ const NumberInput = ({ title, iconName }) => {
         </label>
       </div>
       <div className={styles.NumberInputPart}>
-        <NumberField.Root id={id} defaultValue={0} className={styles.Field}>
+        <NumberField.Root id={id} defaultValue={0} className={styles.Field} >
           <NumberField.ScrubArea className={styles.ScrubArea}>
             <NumberField.ScrubAreaCursor className={styles.ScrubAreaCursor}>
               <CursorGrowIcon />
@@ -36,7 +36,7 @@ const NumberInput = ({ title, iconName }) => {
             <NumberField.Decrement className={styles.Decrement}>
               <MinusIcon />
             </NumberField.Decrement>
-            <NumberField.Input className={styles.Input} ref={inputRef} />
+            <NumberField.Input className={styles.Input} ref={inputRef} value={value}/>
             <NumberField.Increment className={styles.Increment} onClick={showValue}>
               <PlusIcon />
             </NumberField.Increment>

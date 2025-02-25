@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Icon from "../../../icon/Icon.jsx";
 import { useTranslation } from "react-i18next";
 import { DatePicker, Flex, Input, Typography, Select } from "antd";
@@ -9,20 +9,19 @@ import FormWizard from "react-form-wizard-component";
 import "react-form-wizard-component/dist/style.css";
 import NumberInput from "./components/NumberInput.jsx";
 import InputField from "./components/InputField.jsx";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-// import { byPrefixAndName } from '@fortawesome/free-solid-svg-icons';
-// {byPrefixAndName.fas['house']}
-// const iconFurnitureList = (
-//   <FontAwesomeIcon icon="fa-solid fa-people-carry-box" />
-// );
+import FurnitureMenu from "./components/FurnitureMenu.jsx";
+import OrderList from "./components/OrderList.jsx";
+import { furnitureItems } from "./components/FurnitureItems.jsx";
+import axios from 'axios';
 
 const boxStyle = {
   width: "100%",
-  height: 500,
+  height: "100%",
   borderRadius: 6,
   backgroundColor: "#e68900",
+  padding: "20px",
 };
+
 const { TextArea } = Input;
 const handleChange = (value) => {
   console.log(`selected ${value}`);
@@ -37,23 +36,31 @@ const range = (start, end) => {
 };
 
 const Calculator = () => {
-  const services = [
-    {
-      label:"Додаткове упакування речей",
-      value:"Додаткове упакування речей"
-    }, 
-    {
-      label:"Монтаж, демонтаж",
-      value:"Монтаж, демонтаж"
-    }
-  ];
-  // const [selectedItems, setSelectedItems] = useState([]);
-  // const filteredOptions = services.filter((o) => !selectedItems.includes(o));
 
-  const handleComplete = () => {
-    console.log("Form completed!");
-    // Handle form completion logic here
+  
+  const [selectedItems, addItem] = useState([]);
+
+  const handleDoubleClick = (event) => {
+    console.log(event);
+    const itemElement = event.target.closest(".ant-menu-item"); // Ищем ближайший элемент меню
+
+    console.log(itemElement);
+    if (!itemElement) return; // Если элемент не найден, выходим
+
+    const key = itemElement.getAttribute("data-menu-key"); // Извлекаем ключ из атрибута
+    console.log(key);
+
+    if (!key) return;
+
+    const label = findLabelByKey(key, furnitureItems);
+    if (label) {
+      addItem((prev) => [...prev, label]);
+    }
+
+    console.log("Key:", key);
+    console.log("Label:", label);
   };
+
   const tabChanged = ({ prevIndex, nextIndex }) => {
     console.log("prevIndex", prevIndex);
     console.log("nextIndex", nextIndex);
@@ -73,10 +80,53 @@ const Calculator = () => {
     disabledSeconds: () => range(1, 61),
   });
 
+
+  const selected = ({ key }) => {
+    const item = findLabelByKey(key, furnitureItems);
+    if (!item) return;
+  
+    addItem((prev) => {
+      // Если prev пустой или undefined, создаем массив
+      if (!prev) return [{ ...item, count: 1 }];
+  
+      // Проверяем, есть ли уже этот элемент в массиве
+      const existingItem = prev.find((el) => el.key === item.key);
+  
+      if (existingItem) {
+        // Если элемент уже есть, увеличиваем его count
+        return prev.map((el) =>
+          el.key === item.key ? { ...el, count: (el.count || 1) + 1 } : el
+        );
+      }
+  
+      // Если элемента нет, добавляем его с count = 1
+      console.log([...prev, { ...item, count: 1 }]);
+      return [...prev, { ...item, count: 1 }];
+    });
+  };
+  
+  const findLabelByKey = (key, items) => {
+    for (const item of items) {
+      if (item.key === key) {
+        return item
+      }
+      if (item.children) {
+        const found = findLabelByKey(key, item.children);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+  
+  // Проверяем, обновляется ли массив
+  useEffect(() => {
+    console.log("Обновленный selectedItems:", selectedItems);
+  }, [selectedItems]);
+
   return (
     <div className="calculator-main">
       <h1 className="calculator-welcome">{t("calculator.welcome")}</h1>
-      <FormWizard
+      {/* <FormWizard
         onComplete={handleComplete}
         onTabChange={tabChanged}
         color={"#e68900"}
@@ -84,192 +134,25 @@ const Calculator = () => {
         backButtonText={"Назад"}
         finishButtonText={"Порахувати"}
       >
-        <FormWizard.TabContent title="Кількість меблів" icon={"ti-package"}>
-          <div className="calculator-container">
-            <div className="calculator-inputs">
-              <NumberInput title={"Ліжко"} iconName={"bed"} />
-              <NumberInput title={"Umzugskartons"} iconName={"box-1"} />
-              <NumberInput title={"Taschen mit Kleidung"} iconName={"bag"} />
-              <NumberInput title={"Koffer"} iconName={"suitcase-travel"} />
-              <NumberInput
-                title={"Kleine Dinger, Taschen, Rucksäcke bis 10 kg"}
-                iconName={"backpack-bag-holidays"}
-              />
-              {/* <NumberInput title={"Bett 90×200 cm"} iconName={bedIcon} /> */}
-              {/* <NumberInput title={"Bett 140×200 cm"} iconName={bedIcon} />
-              <NumberInput title={"Bett 180×200 cm"} iconName={bedIcon} />
-              <NumberInput
-                title={"Bett/Boxspringbett 90×200 cm"}
-                iconName={bedIcon}
-              />
-              <NumberInput
-                title={"Bett/Boxspringbett 140×200 cm"}
-                iconName={bedIcon}
-              />
-              <NumberInput
-                title={"Bett/Boxspringbett 180×200 cm"}
-                iconName={bedIcon}
-              />
-              <NumberInput title={"Bett/Kinderbett"} iconName={bedIcon} />
-              <NumberInput title={"Bett/Klappbett"} iconName={bedIcon} /> */}
-              <NumberInput
-                title={"Bild bis zu 1m breit"}
-                iconName={"picture"}
-              />
-              {/* <NumberInput title={"Bild bis zu 2m breit"} iconName={bedIcon} /> */}
-              <NumberInput
-                title={"Büroausstattung"}
-                iconName={"desk-computer"}
-              />
-              <NumberInput title={"Fahrrad"} iconName={"bicycle-3"} />
-              <NumberInput title={"Чахлик"} iconName={"bicycle-3"} />
-              <NumberInput title={"Fernseher bis zu 40 Zoll"} iconName={"tv"} />
-              {/* <NumberInput
-                title={"Fernseher bis zu 60 Zoll"}
-                iconName={bedIcon}
-              /> */}
-              <NumberInput
-                title={"Gamingstuhl, Bürostuhl"}
-                iconName={"armchair-thin"}
-              />
-              <NumberInput
-                title={"Garderobe"}
-                iconName={"closet-furniture-and-household"}
-              />
-              {/* <NumberInput title={"Gartenmöbel Sessel"} iconName={bedIcon} /> */}
-              <NumberInput title={"Gartenmöbel Tisch"} iconName={"table"} />
-              <NumberInput title={"Geschirrspüler"} iconName={"dishwasher-2"} />
-              {/* <NumberInput
-                title={"Hochschrank Badezimmer"}
-                iconName={bedIcon}
-              /> */}
-              <NumberInput
-                title={"Kleiderschrank bis zu 1m breit"}
-                iconName={"closet-furniture-and-household"}
-              />
-              {/* <NumberInput
-                title={"Kleiderschrank bis zu 2m breit"}
-                iconName={bedIcon}
-              />
-              <NumberInput
-                title={"Kleiderschrank bis zu 3m breit"}
-                iconName={bedIcon}
-              /> */}
-              {/* <NumberInput
-                title={"Kleiderschrank/Schwebetürenschrank 2-türig"}
-                iconName={bedIcon}
-              />
-              <NumberInput
-                title={"Kleiderschrank/Schwebetürenschrank 3-türig"}
-                iconName={bedIcon}
-              /> */}
-              <NumberInput
-                title={"Kommode, Sideboard"}
-                iconName={"closet-furniture-and-household"}
-              />
-              {/* <NumberInput title={"Küchenabzug"} iconName={bedIcon} /> */}
-              {/* <NumberInput title={"Küchenschrank"} iconName={bedIcon} /> */}
-              {/* <NumberInput title={"Küchenwandschränke"} iconName={bedIcon} /> */}
-              {/* <NumberInput title={"Kühlschrank 2-türig"} iconName={bedIcon} />
-              <NumberInput
-                title={"Kühlschrank bis zu 1,2m hoch"}
-                iconName={bedIcon}
-              /> */}
-              <NumberInput title={"Kühlschrank"} iconName={"fridge-2"} />
-              <NumberInput title={"Lampe, Deckenlampe"} iconName={"lamp-1"} />
-              {/* <NumberInput title={"Lampe, Stehlampe"} iconName={bedIcon} /> */}
-              <NumberInput title={"Lattenrost 90×200 cm"} iconName={"bed"} />
-              {/* <NumberInput title={"Lattenrost 140×200 cm"} iconName={bedIcon} />
-              <NumberInput title={"Lattenrost 180×200 cm"} iconName={bedIcon} />
-              <NumberInput title={"Matratz 90×200 cm"} iconName={bedIcon} />
-              <NumberInput title={"Matratz 140×200 cm"} iconName={bedIcon} /> */}
-              <NumberInput title={"Matratz 180×200 cm"} iconName={"bed"} />
-              {/* <NumberInput title={"Medikamentenschrank"} iconName={bedIcon} /> */}
-              <NumberInput title={"Mikrowelle"} iconName={"microwave"} />
-              {/* <NumberInput title={"Nachttisch"} iconName={bedIcon} /> */}
-              <NumberInput title={"Ofen und Herd"} iconName={"oven"} />
-              {/* <NumberInput
-                title={"Pflanze bis zu 1m hoch"}
-                iconName={bedIcon}
-              /> */}
-              <NumberInput
-                title={"Pflanze bis zu 2m hoch"}
-                iconName={"plant"}
-              />
-              {/* <NumberInput title={"Platte"} iconName={bedIcon} /> */}
-              <NumberInput title={"Regale"} iconName={"book-shelf"} />
-              {/* <NumberInput title={"Rollcontainer"} iconName={bedIcon} /> */}
-              <NumberInput
-                title={"Schlaf-/Gästesofa 90×200 cm"}
-                iconName={"sofa"}
-              />
-              {/* <NumberInput title={"Schreibtisch leichter"} iconName={bedIcon} /> */}
-              <NumberInput title={"Schreibtisch schwerer"} iconName={"table"} />
-              {/* <NumberInput title={"Schuhschrank"} iconName={bedIcon} /> */}
-              <NumberInput title={"Sessel"} iconName={"chair-2"} />
-              {/* <NumberInput title={"Sofa aus 1 Teilen"} iconName={bedIcon} />
-              <NumberInput
-                title={"Sofa, Ecksofa aus 2 Teilen"}
-                iconName={bedIcon}
-              /> */}
-              {/* <NumberInput
-                title={"Sofa, Ecksofa aus 3 Teilen"}
-                iconName={bedIcon}
-              /> */}
-              {/* <NumberInput
-                title={"Spiegel bis zu 1m breit"}
-                iconName={bedIcon}
-              /> */}
-              <NumberInput
-                title={"Spiegel bis zu 2m breit"}
-                iconName={"mirror"}
-              />
-              {/* <NumberInput title={"Spiegelschrank"} iconName={bedIcon} /> */}
-              <NumberInput title={"Stuhl"} iconName={"chair-2"} />
-              {/* <NumberInput
-                title={"Teppich bis zu 1m breit"}
-                iconName={bedIcon}
-              />
-              <NumberInput
-                title={"Teppich bis zu 2m breit"}
-                iconName={bedIcon}
-              /> */}
-              <NumberInput
-                title={"Teppich bis zu 3m breit"}
-                iconName={"carpet"}
-              />
-              {/* <NumberInput
-                title={"Tisch leichter oder Couchtisch mit Glasplatte"}
-                iconName={bedIcon}
-              /> */}
-              {/* <NumberInput
-                title={"Tisch leichter, Couchtisch"}
-                iconName={bedIcon}
-              /> */}
-              {/* <NumberInput title={"Tisch schwerer"} iconName={bedIcon} />
-              <NumberInput
-                title={"Tisch schwerer mit Glasplatte"}
-                iconName={bedIcon}
-              /> */}
-              <NumberInput
-                title={"Trockenmaschine"}
-                iconName={"washing-machine-2"}
-              />
-              {/* <NumberInput
-                title={"Waschbeckenunterschrank"}
-                iconName={bedIcon}
-              /> */}
-              {/* <NumberInput title={"Wäschekorb"} iconName={bedIcon} /> */}
-              <NumberInput
-                title={"Waschmaschine"}
-                iconName={"washing-machine-2"}
-              />
-              {/* <NumberInput title={"Waschmaschinenschrank"} iconName={bedIcon} /> */}
-            </div>
-          </div>
-        </FormWizard.TabContent>
-        <FormWizard.TabContent title="Персональні данні" icon="ti-user">
+        <FormWizard.TabContent title="Кількість меблів" icon={"ti-package"}> */}
+      <div className="calculator-container">
+        <div className="calculator-inputs">
           <Flex
+            wrap
+            gap="small"
+            justify="space-between"
+            align="flex-start"
+            style={boxStyle}
+          >
+            <FurnitureMenu onClick={selected} />
+            <OrderList items={selectedItems} />
+
+          </Flex>
+        </div>
+      </div>
+      {/* </FormWizard.TabContent>
+        <FormWizard.TabContent title="Персональні данні" icon="ti-user"> */}
+      {/* <Flex
             wrap
             gap="small"
             justify="space-around"
@@ -333,13 +216,13 @@ const Calculator = () => {
                 />
               </div>
             </Flex>
-          </Flex>
-        </FormWizard.TabContent>
+          </Flex> */}
+      {/* </FormWizard.TabContent>
         <FormWizard.TabContent title="Last step" icon="ti-check">
           <h3>Last Tab</h3>
           <p>Some content for the last tab</p>
         </FormWizard.TabContent>
-      </FormWizard>
+      </FormWizard> */}
       {/* add style */}
       <style>{`
         @import url("https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css");

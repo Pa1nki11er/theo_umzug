@@ -1,16 +1,6 @@
 
 .calculator-container{
-    display: flex;
-    padding: 20px;
-    justify-content: space-around;
-    background-color: #f9f9f9;
-    margin-top: 20px;
-    margin-left: 10%;
-    width: 80%;
-    background-color: #e68900; 
-    align-items: center;
-    border-radius: 5px;
-    flex-direction: column;
+
 }
 
 .personal-container 
