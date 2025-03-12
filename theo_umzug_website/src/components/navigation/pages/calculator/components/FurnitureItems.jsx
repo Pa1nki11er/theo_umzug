@@ -1,11 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import Icon from "../../../../icon/Icon.jsx";
 
 export const furnitureItems = [
   {

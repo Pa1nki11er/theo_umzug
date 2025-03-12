@@ -83,10 +83,12 @@
   .Decrement {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    cursor: pointer;
   }
   .Increment {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    cursor: pointer;
   }
   .NumberInputPart{
     display: flex;

@@ -42,10 +42,27 @@ const resources = {
         inputContactUsSend: "Відправити",
       },
       calculator: {
-        welcome:"Тут ви можете прорахувати вартість вашого замовлення!",
-        inputCalculatorDistance: "Відстань",
-        inputCalculatorWeight: "Вага",
-        inputCalculatorVolume: "Об'єм",
+        furnitureList: "Каталог меблів",
+        price: "Ціна",
+        weight: "Вага",
+        volume: "Об'єм",
+        kg: "кг",
+        loadPoint: "Пункт загрузки",
+        unloadPoint: "Пункт выгрузки",
+        floor: "Поверх",
+        distanceLoadingToUnloading: "Відстань від пункту загрузи до пунтку вигрузки",
+        distanceToTruck: "Відстань від входу до вантажівки",
+        orderList: "Список замовлення",
+        addPosition: "Додайте позицію",
+        distance: "Відстань",
+        floors:{
+          ground: "Перший поверх",
+          first: "Другий поверх",
+          second: "Третій поверх",
+          third: "Четвертий поверх",
+          fourth: "Перший поверх",
+          fifthAndMore: "П'ятий і вище",
+        }
       },
     },
   },
@@ -87,6 +104,30 @@ const resources = {
         inputContactUsMessage: "Message",
         inputContactUsSend: "Send",
       },
+      calculator: {
+        furnitureList: "Furniture Catalog",
+        price: "Price",
+        weight: "Weight",
+        volume: "Volume",
+        kg: "kg",
+        loadPoint: "Loading Point",
+        unloadPoint: "Unloading Point",
+        floor: "Floor",
+        distanceLoadingToUnloading: "Distance from loading point to unloading point",
+        distanceToTruck: "Distance from entrance to truck",
+        orderList: "Order List",
+        addPosition: "Add Position",
+        distance: "Distance",
+        floors: {
+          ground: "Ground floor",
+          first: "First floor",
+          second: "Second floor",
+          third: "Third floor",
+          fourth: "Fourth floor",
+          fifthAndMore: "Fifth and above",
+        }
+      }
+      
     },
   },
   de: {
@@ -127,6 +168,30 @@ const resources = {
         inputContactUsMessage: "Nachricht",
         inputContactUsSend: "Senden",
       },
+      calculator: {
+        furnitureList: "Möbelkatalog",
+        price: "Preis",
+        weight: "Gewicht",
+        volume: "Volumen",
+        kg: "kg",
+        loadPoint: "Ladepunkt",
+        unloadPoint: "Entladepunkt",
+        floor: "Etage",
+        distanceLoadingToUnloading: "Entfernung vom Ladepunkt zum Entladepunkt",
+        distanceToTruck: "Entfernung vom Eingang zum LKW",
+        orderList: "Bestellliste",
+        addPosition: "Position hinzufügen",
+        distance: "Entfernung",
+        floors: {
+          ground: "Erdgeschoss",
+          first: "Erster Stock",
+          second: "Zweiter Stock",
+          third: "Dritter Stock",
+          fourth: "Vierter Stock",
+          fifthAndMore: "Fünfter und höher",
+        }
+      }
+      
     },
   },
   ru: {
@@ -167,6 +232,29 @@ const resources = {
         inputContactUsMessage: "Сообщение",
         inputContactUsSend: "Отправить",
       },
+      calculator: {
+        furnitureList: "Каталог мебели",
+        price: "Цена",
+        weight: "Вес",
+        volume: "Объем",
+        kg: "кг",
+        loadPoint: "Пункт загрузки",
+        unloadPoint: "Пункт выгрузки",
+        floor: "Этаж",
+        distanceLoadingToUnloading: "Расстояние от пункта загрузки до пункта выгрузки",
+        distanceToTruck: "Расстояние от входа до грузовика",
+        orderList: "Список заказов",
+        addPosition: "Добавьте позицию",
+        distance: "Расстояние",
+        floors: {
+          ground: "Первый этаж",
+          second: "Второй этаж",
+          third: "Третий этаж",
+          fourth: "Четвёртый этаж",
+          fifthAndMore: "Пятый и выше",
+        }
+      }
+      
     },
   },
 };

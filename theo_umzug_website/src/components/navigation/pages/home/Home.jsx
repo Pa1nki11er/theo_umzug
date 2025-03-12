@@ -13,53 +13,53 @@ const Home = () => {
     <div className="home-container">
       {/* Хедер */}
       <header className="home-header">
-        <h1>{useTranslation().t('homepage.welcome')}</h1>
-        <p>{useTranslation().t('homepage.priority')}</p>
-        <button className="action-button">{useTranslation().t('homepage.btnContactUs')}</button>
+        <h1>{t('homepage.welcome')}</h1>
+        <p>{t('homepage.priority')}</p>
+        <button className="action-button">{t('homepage.btnContactUs')}</button>
       </header>
 
       {/* Секція "Про компанію" */}
       <section className="about-section">
-        <h2>{useTranslation().t('homepage.aboutCompany')}</h2>
-        <p>{useTranslation().t('homepage.companyDescription')}</p>
+        <h2>{t('homepage.aboutCompany')}</h2>
+        <p>{t('homepage.companyDescription')}</p>
         <img src={cardImage} alt="Про компанію" />
       </section>
 
       {/* Секція послуг */}
       <section className="services-section">
-        <h2>{useTranslation().t('homepage.ourServices')}</h2>
+        <h2>{t('homepage.ourServices')}</h2>
         <div className="service-cards">
           <div className="service-card">
             <h3>Umzug Hilfe</h3>
-            <p>{useTranslation().t('homepage.serviceDescriptionUmzugHilfe')}</p>
+            <p>{t('homepage.serviceDescriptionUmzugHilfe')}</p>
           </div>
           <div className="service-card">
             <h3>Umzug Taxi</h3>
-            <p>{useTranslation().t('homepage.serviceDescriptionUmzugTaxi')}</p>
+            <p>{t('homepage.serviceDescriptionUmzugTaxi')}</p>
           </div>
         </div>
       </section>
 
       {/* Секція переваг */}
       <section className="advantages-section">
-        <h2>{useTranslation().t('homepage.whyUs')}</h2>
+        <h2>{t('homepage.whyUs')}</h2>
         <ul>
-          <li>{useTranslation().t('homepage.whyUsReasons.reason1')}</li>
-          <li>{useTranslation().t('homepage.whyUsReasons.reason2')}</li>
-          <li>{useTranslation().t('homepage.whyUsReasons.reason3')}</li>
+          <li>{t('homepage.whyUsReasons.reason1')}</li>
+          <li>{t('homepage.whyUsReasons.reason2')}</li>
+          <li>{t('homepage.whyUsReasons.reason3')}</li>
         </ul>
       </section>
       <section className="contact-section">
         <div className="contact-form">
-          <h2>{useTranslation().t('homepage.contactUs')}</h2>
+          <h2>{t('homepage.contactUs')}</h2>
           <form className="cf">
-              <Input className="inputfield" showCount maxLength={20} placeholder={useTranslation().t('homepage.inputContactUsName')}/>
-              <Input className="inputfield" showCount maxLength={40} type="email" placeholder={useTranslation().t('homepage.inputContactUsEmail')} />
-              <Input className="inputfield" showCount maxLength={20} placeholder={useTranslation().t('homepage.inputContactUsSubject')} />
+              <Input className="inputfield" showCount maxLength={20} placeholder={t('homepage.inputContactUsName')}/>
+              <Input className="inputfield" showCount maxLength={40} type="email" placeholder={t('homepage.inputContactUsEmail')} />
+              <Input className="inputfield" showCount maxLength={20} placeholder={t('homepage.inputContactUsSubject')} />
               <Flex vertical gap={32}>
-                <TextArea className="inputfield" showCount maxLength={300} placeholder={useTranslation().t('homepage.inputContactUsMessage')} />
+                <TextArea className="inputfield" showCount maxLength={300} placeholder={t('homepage.inputContactUsMessage')} />
               </Flex>
-            <input className="btnSend" type="button" value={useTranslation().t('homepage.inputContactUsSend')} id="input-submit" />
+            <input className="btnSend" type="button" value={t('homepage.inputContactUsSend')} id="input-submit" />
           </form>
         </div>
       </section>

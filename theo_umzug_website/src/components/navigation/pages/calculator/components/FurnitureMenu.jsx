@@ -1,54 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { NumberField } from "@base-ui-components/react/number-field";
-import styles from "./index.module.css";
-import Icon from "../../../../icon/Icon.jsx";
-import { Flex, Input, Typography, Select, Menu } from "antd";
-import { furnitureItems } from "./FurnitureItems.jsx";
-import axios from 'axios';
+import { Flex, Input, Typography, Select, Menu, ConfigProvider } from "antd";
+import "./theme.css";
+import { useTranslation } from "react-i18next";
 
-const getLevelKeys = (items1) => {
-  const key = {};
-  const func = (items2, level = 1) => {
-    items2.forEach((item) => {
-      if (item.key) {
-        key[item.key] = level;
-      }
-      if (item.children) {
-        func(item.children, level + 1);
-      }
-    });
-  };
-  func(items1);
-  return key;
-};
-const levelKeys = getLevelKeys(furnitureItems);
-
-const FurnitureMenu = ({ onClick, onDoubleClick, onSelect }) => {
-
-
-  const [furnitureList, setFurnitureList] = useState([]);
+const { Title } = Typography;
+const FurnitureMenu = ({ onClick, onDoubleClick, onSelect, furnitureList }) => {
   const [stateOpenKeys, setStateOpenKeys] = useState(["2", "23"]);
+  const { t, i18n } = useTranslation();
 
-  // Загружаем данные при монтировании компонента
-  useEffect(() => {
-    const getFurnitureList = async () => {
-      try {
-        const response = await axios.post("/api/furniture", {});
-        console.log(response.data);
-        setFurnitureList(response.data); // Данные уже распарсены
-      } catch (error) {
-        console.error("Ошибка загрузки данных:", error);
-      }
-    };
-
-    getFurnitureList();
-  }, []);
-  
   const onOpenChange = (openKeys) => {
     const currentOpenKey = openKeys.find(
       (key) => stateOpenKeys.indexOf(key) === -1
     );
+    const getLevelKeys = (items1) => {
+      const key = {};
+      const func = (items2, level = 1) => {
+        items2.forEach((item) => {
+          if (item.key) {
+            key[item.key] = level;
+          }
+          if (item.children) {
+            func(item.children, level + 1);
+          }
+        });
+      };
+      func(items1);
+      return key;
+    };
 
+    const levelKeys = getLevelKeys(furnitureList);
     // open
     if (currentOpenKey !== undefined) {
       const repeatIndex = openKeys
@@ -70,18 +50,46 @@ const FurnitureMenu = ({ onClick, onDoubleClick, onSelect }) => {
 
   return (
     <div>
-      <p>Furniture Menu</p>
-      <Menu
-        mode="inline"
+      <div
         style={{
-          width: 300,
-          borderRadius: 5,
+          textAlign: "center",
+          backgroundColor: "white",
+          borderTopLeftRadius: "3px",
+          borderTopRightRadius: "3px",
         }}
-        items={furnitureList}
-        onClick={onClick}
-        onDoubleClick={onDoubleClick}
-        onSelect={onSelect}
-      />
+      >
+        <Title
+          level={2}
+          style={{
+            padding: "0px",
+            margin: "0px",
+          }}
+        >
+          {t('calculator.furnitureList')}
+        </Title>
+      </div>
+      <div
+        className="furnitureList"
+        style={{
+          maxHeight: "100vh", // задаём максимальную высоту
+          overflowY: "scroll", // включаем вертикальный скроллбар
+        }}
+      >
+        <Menu
+          mode="vertical"
+          style={{
+            width: "45vw",
+            borderTopLeftRadius: "0px",
+            borderTopRightRadius: "0px",
+            borderBottomLeftRadius: "5px",
+          }}
+          items={furnitureList}
+          onClick={onClick}
+          onDoubleClick={onDoubleClick}
+          onSelect={onSelect}
+          selectable={false}
+        />
+      </div>
     </div>
   );
 };

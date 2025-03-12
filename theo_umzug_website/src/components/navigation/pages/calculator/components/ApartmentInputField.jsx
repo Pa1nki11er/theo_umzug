@@ -4,18 +4,20 @@ import "./../Calculator.css";
 
 const ApartamentInputField = ({ title, options }) => {
   return (
-    <div>
-      <Typography.Title level={5}>{title}</Typography.Title>
-      <Input
-        count={{
-          show: true,
-          max: 10,
-        }}
-        style={{
-          width: 120,
-        }}
-      />
-    </div>
+    <Flex wrap gap="small" justify="start" align="center" vertical>
+      <Typography.Title level={5}>
+        {title}
+        <Input
+          count={{
+            show: true,
+            max: 10,
+          }}
+          style={{
+            width: 120,
+          }}
+        />
+      </Typography.Title>
+    </Flex>
   );
 };
 

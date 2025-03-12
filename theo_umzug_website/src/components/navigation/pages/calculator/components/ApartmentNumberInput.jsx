@@ -1,25 +1,25 @@
 import React from "react";
-import { Flex, Input, Typography, Select } from "antd";
+import { Flex, Input, Typography, Select, InputNumber } from "antd";
 import "./../Calculator.css";
 
 const { Paragraph } = Typography;
 
-const ApartamentInputSelect = ({title, options, placeholder, onChange}) => {
+const ApartamentNumberInput = ({title, placeholder, onChange, step}) => {
     return(
         <div className="apartment-input">
-            {/* <Typography.Title level={5}>{title}</Typography.Title> */}
             <Paragraph strong>{title}</Paragraph>
-            <Select
+            <InputNumber
                 style={{
                     width: "10vw",
                 }}
-                options={options}
+                size="large"
+                min={0} max={100}
                 placeholder={placeholder}
                 onChange={onChange}
-                size="large"
+                step={step}
             />
         </div>
     );
 }
 
-export default ApartamentInputSelect;
+export default ApartamentNumberInput;

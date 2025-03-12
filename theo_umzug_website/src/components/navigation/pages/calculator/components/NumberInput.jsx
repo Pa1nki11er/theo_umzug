@@ -1,43 +1,82 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { NumberField } from "@base-ui-components/react/number-field";
 import styles from "./index.module.css";
 import Icon from "../../../../icon/Icon.jsx";
+// Предполагается, что MinusIcon, PlusIcon и CursorGrowIcon импортированы
 
-const NumberInput = ({ title, iconName, value }) => {
+const NumberInput = ({ title, iconName, value, idKey, onChange }) => {
   const id = React.useId();
-  const inputRef = React.useRef(null); // Create a ref for the input
+  const inputRef = React.useRef(null);
+  const [newValue, setValue] = useState(value);
 
-  function showValue() {
-    if (inputRef.current) {
-      console.log(inputRef.current.value); // Get the input value
-    }
-  }
+  // Обновляем локальное состояние, если родительский компонент изменил value
+  useEffect(() => {
+    setValue(value);
+  }, [value]);
+
+  const handleIncrement = () => {
+    const updatedValue = newValue + 1;
+    setValue(updatedValue);
+    if (onChange) onChange(updatedValue);
+    console.log("Increment: " + updatedValue);
+  };
+
+  const handleDecrement = () => {
+    const updatedValue = newValue - 1;
+    setValue(updatedValue);
+    if (onChange) onChange(updatedValue);
+    console.log("Decrement: " + updatedValue);
+  };
+
+  const handleInputChange = (e) => {
+    // Преобразуем значение из строки в число
+    const updatedValue = Number(e.target.value);
+    setValue(updatedValue);
+    if (onChange) onChange(updatedValue);
+  };
 
   return (
-    <div className={styles.Container}>
+    <div className={styles.Container} id={idKey}>
       <div className={styles.NumberInputPart}>
         <Icon
           iconName={iconName}
-          alt={"icon"}
-          style={{ width: "35px", height: "35px", marginLeft: "20px", marginTop: "3px" }}
+          alt="icon"
+          style={{
+            width: "35px",
+            height: "35px",
+            marginLeft: "20px",
+            marginTop: "3px",
+          }}
         />
         <label htmlFor={id} className={styles.Label}>
           {title}
         </label>
       </div>
       <div className={styles.NumberInputPart}>
-        <NumberField.Root id={id} defaultValue={0} className={styles.Field} >
+        <NumberField.Root id={id} className={styles.Field}>
           <NumberField.ScrubArea className={styles.ScrubArea}>
             <NumberField.ScrubAreaCursor className={styles.ScrubAreaCursor}>
               <CursorGrowIcon />
             </NumberField.ScrubAreaCursor>
           </NumberField.ScrubArea>
           <NumberField.Group className={styles.Group}>
-            <NumberField.Decrement className={styles.Decrement}>
+            <NumberField.Decrement
+              className={styles.Decrement}
+              onClick={handleDecrement}
+            >
               <MinusIcon />
             </NumberField.Decrement>
-            <NumberField.Input className={styles.Input} ref={inputRef} value={value}/>
-            <NumberField.Increment className={styles.Increment} onClick={showValue}>
+            <NumberField.Input
+              className={styles.Input}
+              ref={inputRef}
+              value={newValue}
+              onChange={handleInputChange}
+              disabled={true}
+            />
+            <NumberField.Increment
+              className={styles.Increment}
+              onClick={handleIncrement}
+            >
               <PlusIcon />
             </NumberField.Increment>
           </NumberField.Group>
