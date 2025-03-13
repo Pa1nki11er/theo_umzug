@@ -6,6 +6,8 @@ import ApartmentNumberInput from "./ApartmentNumberInput.jsx";
 import CustomButton from "../../../../button/CustomButton.jsx";
 import "./theme.css";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
+
 
 const { Title } = Typography;
 
@@ -14,8 +16,8 @@ const orderListStyle = {
   height: "100vh",
   textAlign: "center",
   borderRadius: "5px",
-  padding:"0px",
-  margin:"0px",
+  padding: "0px",
+  margin: "0px",
 };
 const orderListSumStyle = {
   backgroundColor: "white",
@@ -72,7 +74,7 @@ const OrderList = ({ items, onChange }) => {
           price: acc.price + unitPrice * item.count,
         };
       },
-      { weight: 0, volume: 0, price: 0 } // здесь можно задать нужную базовую стоимость (например, 200€)
+      { weight: 0, volume: 0, price: 0 } // здесь можно задать нужную базовую стоимость
     );
 
     let servicePrice = 100;
@@ -129,15 +131,25 @@ const OrderList = ({ items, onChange }) => {
     );
     onChange && onChange(updatedItems);
   };
+
   const createPDF = async () => {
-      try {
-        const response = await axios.post("/api/furniture", {data});
-        setFurnitureList(response.data); // Данные уже распарсены
-      } catch (error) {
-        console.error("Ошибка загрузки данных:", error);
-      }
-  }
+    
+    let orderList = document.getElementById("orderList");
+    const data = {
+      orderList: orderList.innerHTML,
+    }
+
+    try {
+      const response = await axios.post("/api/orderPDF", { data }, { responseType: 'blob' });
+      const file = new Blob([response.data], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL, '_blank');
+    } catch (error) {
+      console.error("Ошибка загрузки PDF:", error);
+    }
+  };
   
+
   // При маппинге передаем обновлённое значение и onChange
   let itemList;
   if (Array.isArray(items) && items.length > 0) {
@@ -158,12 +170,11 @@ const OrderList = ({ items, onChange }) => {
       </Title>
     );
   }
+  console.log("orderList", items);
 
   return (
-    <Flex gap="small" vertical style={orderListStyle}>
-      <Title
-        level={3}
-      >
+    <Flex gap="small" vertical style={orderListStyle} id="orderList">
+      <Title level={3}>
         <Flex
           style={orderListSumStyle}
           gap="large"
@@ -185,14 +196,10 @@ const OrderList = ({ items, onChange }) => {
           <span>
             {t("calculator.weight")} {totals.weight} kg
           </span>
-          <Flex
-            align="center"
-            justify="flex-end"
-          >
-            <CustomButton title="PDF" onClick={createPDF}/>
+          <Flex align="center" justify="flex-end">
+            <CustomButton title="PDF" onClick={createPDF} />
           </Flex>
         </Flex>
-
       </Title>
       <Divider
         style={{
