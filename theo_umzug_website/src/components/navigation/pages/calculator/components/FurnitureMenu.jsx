@@ -82,6 +82,8 @@ const FurnitureMenu = ({ onClick, onDoubleClick, onSelect, furnitureList }) => {
             borderTopLeftRadius: "0px",
             borderTopRightRadius: "0px",
             borderBottomLeftRadius: "5px",
+            fontSize: "1.5em",
+
           }}
           items={furnitureList}
           onClick={onClick}

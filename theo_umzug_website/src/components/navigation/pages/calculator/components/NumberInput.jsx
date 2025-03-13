@@ -42,8 +42,8 @@ const NumberInput = ({ title, iconName, value, idKey, onChange }) => {
           iconName={iconName}
           alt="icon"
           style={{
-            width: "35px",
-            height: "35px",
+            width: "45px",
+            height: "45px",
             marginLeft: "20px",
             marginTop: "3px",
           }}
@@ -105,8 +105,8 @@ function CursorGrowIcon(props) {
 function PlusIcon(props) {
   return (
     <svg
-      width="10"
-      height="10"
+      width="20"
+      height="20"
       viewBox="0 0 10 10"
       fill="none"
       stroke="currentcolor"
@@ -122,8 +122,8 @@ function PlusIcon(props) {
 function MinusIcon(props) {
   return (
     <svg
-      width="10"
-      height="10"
+      width="20"
+      height="20"
       viewBox="0 0 10 10"
       fill="none"
       stroke="currentcolor"

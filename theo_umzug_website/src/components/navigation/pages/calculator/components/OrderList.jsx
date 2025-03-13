@@ -8,7 +8,6 @@ import "./theme.css";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
-
 const { Title } = Typography;
 
 const orderListStyle = {
@@ -24,6 +23,7 @@ const orderListSumStyle = {
   width: "50vw",
   textAlign: "start",
   borderRadius: "5px",
+  fontSize: "1.5em",
 };
 
 let itemList = "";
@@ -35,6 +35,7 @@ const OrderList = ({ items, onChange }) => {
   const [loadingDistance, setLoadingDistance] = useState(0);
   const [unloadingDistance, setUnloadingDistance] = useState(0);
   const [distanceBetween, setDistanceBetween] = useState(0);
+  const [isLoading, setLoading] = useState(false);
   const { t, i18n } = useTranslation();
 
   // Основные итоги (вес, объем, базовая цена)
@@ -133,22 +134,25 @@ const OrderList = ({ items, onChange }) => {
   };
 
   const createPDF = async () => {
-    
-    let orderList = document.getElementById("orderList");
-    const data = {
-      orderList: orderList.innerHTML,
-    }
+    setLoading(true);
 
     try {
-      const response = await axios.post("/api/orderPDF", { data }, { responseType: 'blob' });
-      const file = new Blob([response.data], { type: 'application/pdf' });
+      const response = await axios.post(
+        "/api/orderPDF",
+        {},
+        { responseType: "blob" }
+      );
+      const file = new Blob([response.data], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-      window.open(fileURL, '_blank');
+      if (response.data) {
+        setLoading(false);
+      }
+      window.open(fileURL, "_blank");
     } catch (error) {
+      setLoading(false);
       console.error("Ошибка загрузки PDF:", error);
     }
   };
-  
 
   // При маппинге передаем обновлённое значение и onChange
   let itemList;
@@ -197,7 +201,13 @@ const OrderList = ({ items, onChange }) => {
             {t("calculator.weight")} {totals.weight} kg
           </span>
           <Flex align="center" justify="flex-end">
-            <CustomButton title="PDF" onClick={createPDF} />
+            <CustomButton
+              title="PDF"
+              onClick={createPDF}
+              color="danger"
+              isLoading={isLoading}
+              size={"large"}
+            />
           </Flex>
         </Flex>
       </Title>
@@ -312,7 +322,8 @@ const OrderList = ({ items, onChange }) => {
         >
           {t("calculator.orderList")}
         </Title>
-        {itemList}
+
+          {itemList}
       </div>
     </Flex>
   );
