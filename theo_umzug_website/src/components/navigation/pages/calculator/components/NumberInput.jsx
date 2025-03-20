@@ -1,42 +1,95 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useId, useCallback } from "react";
 import { NumberField } from "@base-ui-components/react/number-field";
 import styles from "./index.module.css";
 import Icon from "../../../../icon/Icon.jsx";
-// Предполагается, что MinusIcon, PlusIcon и CursorGrowIcon импортированы
+import classNames from "classnames";
 
-const NumberInput = ({ title, iconName, value, idKey, onChange }) => {
-  const id = React.useId();
-  const inputRef = React.useRef(null);
-  const [newValue, setValue] = useState(value);
+// Icons can be imported from a separate file if reused elsewhere
+const CursorGrowIcon = (props) => (
+  <svg
+    width="26"
+    height="14"
+    viewBox="0 0 24 14"
+    fill="black"
+    stroke="white"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path d="M19.5 5.5L6.49737 5.51844V2L1 6.9999L6.5 12L6.49737 8.5L19.5 8.5V12L25 6.9999L19.5 2V5.5Z" />
+  </svg>
+);
 
-  // Обновляем локальное состояние, если родительский компонент изменил value
+const PlusIcon = (props) => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 10 10"
+    fill="none"
+    stroke="currentcolor"
+    strokeWidth="1.6"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path d="M0 5H5M10 5H5M5 5V0M5 5V10" />
+  </svg>
+);
+
+const MinusIcon = (props) => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 10 10"
+    fill="none"
+    stroke="currentcolor"
+    strokeWidth="1.6"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path d="M0 5H10" />
+  </svg>
+);
+
+const NumberInput = ({
+  title,
+  iconName,
+  value,
+  idKey,
+  onChange = () => {},
+  classNameRemoving,
+  onTransitionEnd,
+}) => {
+  const id = useId();
+  const inputRef = useRef(null);
+  const [localValue, setLocalValue] = useState(value);
+
+  // Sync local state with prop value changes
   useEffect(() => {
-    setValue(value);
+    setLocalValue(value);
   }, [value]);
 
-  const handleIncrement = () => {
-    const updatedValue = newValue + 1;
-    setValue(updatedValue);
-    if (onChange) onChange(updatedValue);
-    console.log("Increment: " + updatedValue);
-  };
+  // Using functional update to ensure latest state
+  const handleIncrement = useCallback(() => {
+    setLocalValue((prev) => {
+      const updatedValue = prev + 1;
+      onChange(updatedValue);
+      return updatedValue;
+    });
+  }, [onChange]);
 
-  const handleDecrement = () => {
-    const updatedValue = newValue - 1;
-    setValue(updatedValue);
-    if (onChange) onChange(updatedValue);
-    console.log("Decrement: " + updatedValue);
-  };
-
-  const handleInputChange = (e) => {
-    // Преобразуем значение из строки в число
-    const updatedValue = Number(e.target.value);
-    setValue(updatedValue);
-    if (onChange) onChange(updatedValue);
-  };
+  const handleDecrement = useCallback(() => {
+    setLocalValue((prev) => {
+      const updatedValue = prev - 1;
+      onChange(updatedValue);
+      return updatedValue;
+    });
+  }, [onChange]);
 
   return (
-    <div className={styles.Container} id={idKey}>
+    <div
+      className={classNames(styles.Container, classNameRemoving)}
+      id={idKey}
+      onTransitionEnd={onTransitionEnd}
+    >
       <div className={styles.NumberInputPart}>
         <Icon
           iconName={iconName}
@@ -63,19 +116,20 @@ const NumberInput = ({ title, iconName, value, idKey, onChange }) => {
             <NumberField.Decrement
               className={styles.Decrement}
               onClick={handleDecrement}
+              aria-label="Decrement value"
             >
               <MinusIcon />
             </NumberField.Decrement>
             <NumberField.Input
               className={styles.Input}
               ref={inputRef}
-              value={newValue}
-              onChange={handleInputChange}
+              value={localValue}
               disabled={true}
             />
             <NumberField.Increment
               className={styles.Increment}
               onClick={handleIncrement}
+              aria-label="Increment value"
             >
               <PlusIcon />
             </NumberField.Increment>
@@ -85,55 +139,5 @@ const NumberInput = ({ title, iconName, value, idKey, onChange }) => {
     </div>
   );
 };
-
-function CursorGrowIcon(props) {
-  return (
-    <svg
-      width="26"
-      height="14"
-      viewBox="0 0 24 14"
-      fill="black"
-      stroke="white"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <path d="M19.5 5.5L6.49737 5.51844V2L1 6.9999L6.5 12L6.49737 8.5L19.5 8.5V12L25 6.9999L19.5 2V5.5Z" />
-    </svg>
-  );
-}
-
-function PlusIcon(props) {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 10 10"
-      fill="none"
-      stroke="currentcolor"
-      strokeWidth="1.6"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <path d="M0 5H5M10 5H5M5 5V0M5 5V10" />
-    </svg>
-  );
-}
-
-function MinusIcon(props) {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 10 10"
-      fill="none"
-      stroke="currentcolor"
-      strokeWidth="1.6"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <path d="M0 5H10" />
-    </svg>
-  );
-}
 
 export default NumberInput;
