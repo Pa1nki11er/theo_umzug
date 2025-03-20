@@ -1,6 +1,7 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import { or } from "ajv/dist/compile/codegen";
 
 const resources = {
   uk: {
@@ -47,22 +48,31 @@ const resources = {
         weight: "Вага",
         volume: "Об'єм",
         kg: "кг",
-        loadPoint: "Пункт загрузки",
-        unloadPoint: "Пункт выгрузки",
+        loadPoint: "Пункт завантаження",
+        unloadPoint: "Пункт розвантаження",
         floor: "Поверх",
-        distanceLoadingToUnloading: "Відстань від пункту загрузи до пунтку вигрузки",
+        distanceLoadingToUnloading:
+          "Відстань від пункту загрузи до пунтку вигрузки",
         distanceToTruck: "Відстань від входу до вантажівки",
         orderList: "Список замовлення",
         addPosition: "Додайте позицію",
         distance: "Відстань",
-        floors:{
+        floors: {
           ground: "Перший поверх",
-          first: "Другий поверх",
-          second: "Третій поверх",
-          third: "Четвертий поверх",
-          fourth: "Перший поверх",
+          second: "Другий поверх",
+          third: "Третій поверх",
+          fourth: "Четвертий поверх",
           fifthAndMore: "П'ятий і вище",
-        }
+        },
+      },
+      orderPDF: {
+        orderLabel: "Замовлення",
+        orderItems: "Позиції замовлення",
+        item: "Позиція",
+        quantity: "Кількість",
+        unitPrice: "Ціна за одиницю",
+        totalUnitPrice: "Загальна ціна",
+        issueDate: "Дата видачі",
       },
     },
   },
@@ -113,7 +123,8 @@ const resources = {
         loadPoint: "Loading Point",
         unloadPoint: "Unloading Point",
         floor: "Floor",
-        distanceLoadingToUnloading: "Distance from loading point to unloading point",
+        distanceLoadingToUnloading:
+          "Distance from loading point to unloading point",
         distanceToTruck: "Distance from entrance to truck",
         orderList: "Order List",
         addPosition: "Add Position",
@@ -125,9 +136,17 @@ const resources = {
           third: "Third floor",
           fourth: "Fourth floor",
           fifthAndMore: "Fifth and above",
-        }
-      }
-      
+        },
+      },
+      orderPDF: {
+        orderLabel: "Order",
+        orderItems: "Order Items",
+        item: "Item",
+        quantity: "Count",
+        unitPrice: "Unit Price",
+        totalUnitPrice: "Total Price",
+        issueDate: "Issue Date",
+      },
     },
   },
   de: {
@@ -140,7 +159,8 @@ const resources = {
       },
       homepage: {
         welcome: "Transport für Sie!",
-        priority: "Unsere Hauptprinzipien - Zuverlässigkeit, Schnelligkeit und Qualität",
+        priority:
+          "Unsere Hauptprinzipien - Zuverlässigkeit, Schnelligkeit und Qualität",
         btnContactUs: "Kontaktieren Sie uns",
         aboutCompany: "Über das Unternehmen",
         companyDescription: `
@@ -189,9 +209,17 @@ const resources = {
           third: "Dritter Stock",
           fourth: "Vierter Stock",
           fifthAndMore: "Fünfter und höher",
-        }
-      }
-      
+        },
+      },
+      orderPDF: {
+        orderLabel: "Bestellung",
+        orderItems: "Bestellpositionen",
+        item: "Position",
+        quantity: "Anzahl",
+        unitPrice: "Stückpreis",
+        totalUnitPrice: "Gesamtpreis",
+        issueDate: "Ausgabedatum",
+      },
     },
   },
   ru: {
@@ -241,7 +269,8 @@ const resources = {
         loadPoint: "Пункт загрузки",
         unloadPoint: "Пункт выгрузки",
         floor: "Этаж",
-        distanceLoadingToUnloading: "Расстояние от пункта загрузки до пункта выгрузки",
+        distanceLoadingToUnloading:
+          "Расстояние от пункта загрузки до пункта выгрузки",
         distanceToTruck: "Расстояние от входа до грузовика",
         orderList: "Список заказов",
         addPosition: "Добавьте позицию",
@@ -252,9 +281,17 @@ const resources = {
           third: "Третий этаж",
           fourth: "Четвёртый этаж",
           fifthAndMore: "Пятый и выше",
-        }
-      }
-      
+        },
+      },
+      orderPDF: {
+        orderLabel: "Заказ",
+        orderItems: "Позиции заказа",
+        item: "Позиция",
+        quantity: "Количество",
+        unitPrice: "Цена за единицу",
+        totalUnitPrice: "Общая цена",
+        issueDate: "Дата выдачи",
+      },
     },
   },
 };
@@ -264,7 +301,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'en',
+    fallbackLng: "en",
     interpolation: {
       escapeValue: false, // React already escapes content
     },

@@ -1,35 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>PDF Document</title>
-  <link rel="stylesheet" href="styleOrderLayout.css" type="text/css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
-    body {
-      font-family: 'Exo 2', sans-serif;
-    }
-    button {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <title>[orderLabel]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            color: #333;
+        }
+
+        .header {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .header-left {
+            float: left;
+        }
+
+        .header-right {
+            float: right;
+            text-align: right;
+        }
+
+        .header-right h1 {
+            margin: 0;
+            font-size: 24px;
+            /*text-transform: uppercase;*/
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        .client-info,
+        .order-info {
+            display: inline-block;
+            vertical-align: top;
+            width: 48%;
+            margin-bottom: 20px;
+        }
+
+        .client-info h2,
+        .order-info h2 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table thead {
+            background: #f2f2f2;
+        }
+
+        table thead th {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table tbody td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .total-due {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .signature {
+            margin-top: 40px;
+            text-align: right;
+        }
+    </style>
 </head>
 
 <body>
-  <p id="test">Hello World!</p>
-  <button>TEST</button>
+
+    <!-- Header Section -->
+    <div class="header">
+        <div class="header-left">
+            <!-- Replace the src with your actual logo or remove the <img> if not needed -->
+            <img src="[logoPath]" alt="Logo" style="width:120px;" />
+            <!-- <p style="margin: 5px 0;">[email]</p> -->
+        </div>
+        <div class="header-right">
+            <h1>[orderLabel]</h1>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <!-- Client & Order Info -->
+    <div class="client-info">
+        <!-- <h2>[Client]</h2>
+        <p>
+            [ClientAdress]
+        </p> -->
+    </div>
+
+    <div class="order-info" style="text-align: right;">
+        <p>
+            <!-- [Order Number]<br> -->
+            [issueDate]
+        </p>
+    </div>
+    <div class="clearfix"></div>
+
+    <!-- Old Apartament Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>[item]</th>
+                <th>[quantity]</th>
+                <th>[unitPrice] €</th>
+                <th>[totalUnitPrice] €</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <!-- Order Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>[item]</th>
+                <th>[quantity]</th>
+                <th>[unitPrice] €</th>
+                <th>[totalUnitPrice] €</th>
+            </tr>
+        </thead>
+        <tbody>
+            [orderItems]
+        </tbody>
+    </table>
+
+    <!-- Total & Signature -->
+    <div class="total-due">
+        <h2>[totalPrice] €</h2>
+    </div>
+
+    <div class="signature">
+        <p>
+            <strong>TheoUmzug</strong>
+        </p>
+    </div>
+
 </body>
-<script>
-  let test = document.getElementById('test');
-  test.innerText = 'Hello meow!';
-</script>
+
 </html>

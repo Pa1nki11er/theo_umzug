@@ -23,7 +23,7 @@ const orderListSumStyle = {
   width: "50vw",
   textAlign: "start",
   borderRadius: "5px",
-  fontSize: "1.5em",
+  fontSize: "1.2em",
 };
 
 let itemList = "";
@@ -78,11 +78,9 @@ const OrderList = ({ items, onChange }) => {
       { weight: 0, volume: 0, price: 0 } // здесь можно задать нужную базовую стоимость
     );
 
-    let servicePrice = 100;
+    let servicePrice = 0;
     let basePrice = newTotals.price;
-    if (distanceBetween !== 0) {
-      basePrice = basePrice + servicePrice;
-    }
+
     // Дополнительная стоимость за этажи:
     // Суммируем коэффициенты для загрузки и выгрузки и умножаем на базовую стоимость
     const floorAdditional =
@@ -96,11 +94,18 @@ const OrderList = ({ items, onChange }) => {
     // Стоимость за расстояние между пунктами (прямое добавление: 1 км = 2€)
     const distanceBetweenAdditional = distanceBetween * 2;
 
+    // Стоимость услуги не должна попадать под влияние коеффициентов??
+    // Если расстояние между пунктами равна 0, то показывать стоимость услуги
+    if (distanceBetween !== 0) {
+      servicePrice = 100;
+    }
+
     const finalPrice =
       basePrice +
       floorAdditional +
       distanceToTruckAdditional +
-      distanceBetweenAdditional;
+      distanceBetweenAdditional +
+      servicePrice;
 
     setTotals({
       weight: parseFloat(newTotals.weight.toFixed(2)),
@@ -127,19 +132,42 @@ const OrderList = ({ items, onChange }) => {
   }, [items]);
 
   const handleItemCountChange = (idKey, newCount) => {
-    const updatedItems = items.map((item) =>
+    
+    if (newCount <= 0) {
+      console.log("Удаляем элемент с idKey:", idKey);
+      // Remove the item with the matching key
+      const updatedItems = items.filter(item => item.key !== idKey);
+      console.log("updatedItems:", updatedItems);
+      onChange && onChange(updatedItems);
+      return;
+    }
+    const updatedItems = items.map(item =>
       item.key === idKey ? { ...item, count: newCount } : item
     );
+    console.log("updatedItems:", updatedItems);
     onChange && onChange(updatedItems);
   };
+  
 
   const createPDF = async () => {
     setLoading(true);
 
+    let data = {
+      items: items,
+      totals: totals,
+      // loadingFloorCoeff: loadingFloorCoeff,
+      // unloadingFloorCoeff: unloadingFloorCoeff,
+      loadingDistance: loadingDistance,
+      unloadingDistance: unloadingDistance,
+      distanceBetween: distanceBetween,
+      currentLang: i18n.language,
+      translation:t("orderPDF", { returnObjects: true }),
+    };
+
     try {
       const response = await axios.post(
         "/api/orderPDF",
-        {},
+        {data},
         { responseType: "blob" }
       );
       const file = new Blob([response.data], { type: "application/pdf" });
@@ -174,7 +202,6 @@ const OrderList = ({ items, onChange }) => {
       </Title>
     );
   }
-  console.log("orderList", items);
 
   return (
     <Flex gap="small" vertical style={orderListStyle} id="orderList">
@@ -245,6 +272,7 @@ const OrderList = ({ items, onChange }) => {
                 // value — выбранный коэффициент (например, 0.4 для 2-го этажа)
                 setLoadingFloorCoeff(value);
               }}
+              idElement="loadingFloor"
             />
             <ApartmentNumberInput
               title={t("calculator.distanceToTruck")}
@@ -279,6 +307,7 @@ const OrderList = ({ items, onChange }) => {
               onChange={(value) => {
                 setUnloadingFloorCoeff(value);
               }}
+              idElement="loadingFloor"
             />
             <ApartmentNumberInput
               title={t("calculator.distanceToTruck")}
@@ -323,7 +352,7 @@ const OrderList = ({ items, onChange }) => {
           {t("calculator.orderList")}
         </Title>
 
-          {itemList}
+        {itemList}
       </div>
     </Flex>
   );

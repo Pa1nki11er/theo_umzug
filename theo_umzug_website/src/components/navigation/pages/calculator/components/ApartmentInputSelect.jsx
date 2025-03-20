@@ -17,6 +17,7 @@ const ApartamentInputSelect = ({title, options, placeholder, onChange}) => {
                 placeholder={placeholder}
                 onChange={onChange}
                 size="large"
+                title={title}
             />
         </div>
     );

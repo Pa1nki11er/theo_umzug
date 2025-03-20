@@ -14,7 +14,7 @@
   
   .Label {
     text-align: center;
-    font-size: 1.875rem;
+    font-size: 1.275rem;
     line-height: 1.25rem;
     font-weight: 500;
     color: var(--color-gray-900);
@@ -105,3 +105,8 @@
     border-radius: 5px;
     margin-top: 10px;
   }
+  .fade-out {
+    transition: opacity 0.5s ease;
+    opacity: 0;
+  }
+  
