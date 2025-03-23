@@ -4,7 +4,7 @@ import "./../Calculator.css";
 
 const { Paragraph } = Typography;
 
-const ApartamentInputSelect = ({title, options, placeholder, onChange}) => {
+const ApartamentInputSelect = ({title, options, placeholder, onChange, status}) => {
     return(
         <div className="apartment-input">
             {/* <Typography.Title level={5}>{title}</Typography.Title> */}
@@ -18,6 +18,7 @@ const ApartamentInputSelect = ({title, options, placeholder, onChange}) => {
                 onChange={onChange}
                 size="large"
                 title={title}
+                status={status}
             />
         </div>
     );

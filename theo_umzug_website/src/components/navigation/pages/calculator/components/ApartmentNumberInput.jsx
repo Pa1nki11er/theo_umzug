@@ -4,7 +4,7 @@ import "./../Calculator.css";
 
 const { Paragraph } = Typography;
 
-const ApartamentNumberInput = ({title, placeholder, onChange, step}) => {
+const ApartamentNumberInput = ({title, placeholder, onChange, step, status}) => {
     return(
         <div className="apartment-input">
             <Paragraph strong>{title}</Paragraph>
@@ -17,6 +17,7 @@ const ApartamentNumberInput = ({title, placeholder, onChange, step}) => {
                 placeholder={placeholder}
                 onChange={onChange}
                 step={step}
+                status={status}
             />
         </div>
     );

@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer";
 import fs from "fs/promises";
 import path from "path";
-import * as dateFunctions from './../helpers/helperFunctions.js';
+import * as dateFunctions from "./../helpers/helperFunctions.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
@@ -39,12 +39,9 @@ const furnitureController = async (req, res) => {
     const { items, totals, translation: translations } = data;
     const price = totals.price;
     const currentDate = dateFunctions.getCurrentFormattedDate();
-
+    console.log("data", data);
     // Load and encode logo image as Base64
-    const imagePath = path.join(
-      __dirname,
-      "../img/logo.jpg"
-    );
+    const imagePath = path.join(__dirname, "../img/logo.jpg");
     const imageData = await fs.readFile(imagePath, { encoding: "base64" });
     const base64Image = `data:image/jpeg;base64,${imageData}`;
 
@@ -73,6 +70,17 @@ const furnitureController = async (req, res) => {
       "[unitPrice]": translations.unitPrice,
       "[totalUnitPrice]": translations.totalUnitPrice,
       "[logoPath]": base64Image,
+      "[oldApartament]": translations.loadPoint || "",
+      "[floorOldApartament]": translations.floor || "",
+      "[floorOldApartamentNum]": data.loadingFloor || "",
+      "[distanceToTruckOldApartament]": translations.distanceToTruck || "",
+      "[distanceToTruckOldApartamentNum]": data.loadingDistance || "",
+      "[newApartament]": translations.unloadPoint || "",
+      "[floorNewApartament]": translations.floor || "",
+      "[floorNewApartamentNum]": data.unloadingFloor || "",
+      "[distanceToTruckNewApartament]": translations.distanceToTruck || "",
+      "[distanceToTruckNewApartamentNum]": data.unloadingDistance || "",
+      "[transportInfo]": translations.transportInfo || "",
     };
 
     // Replace each placeholder in the HTML template
