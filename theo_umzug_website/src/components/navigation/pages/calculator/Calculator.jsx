@@ -39,17 +39,6 @@ const Calculator = ({furnitureList}) => {
   // const [furnitureList, setFurnitureList] = useState([]);
 
   const { t, i18n } = useTranslation();
-  const currentLang = i18n.language;
-  
-  let data = {
-    currentLang: currentLang
-  }
-
-  const tabChanged = ({ prevIndex, nextIndex }) => {
-    console.log("prevIndex", prevIndex);
-    console.log("nextIndex", nextIndex);
-  };
-
 
   const selected = ({ key }) => {
     const item = findLabelByKey(key, furnitureList);
@@ -70,13 +59,6 @@ const Calculator = ({furnitureList}) => {
       }
 
       // Если элемента нет, добавляем его с count = 1
-      console.log([
-        ...prev,
-        {
-          ...item,
-          count: 1,
-        },
-      ]);
       return [...prev, { ...item, count: 1 }];
     });
   };
@@ -93,11 +75,6 @@ const Calculator = ({furnitureList}) => {
     }
     return null;
   };
-
-  // Проверяем, обновляется ли массив
-  // useEffect(() => {
-  //   console.log("Обновленный selectedItems:", selectedItems);
-  // }, [selectedItems]);
 
   return (
     <div className="calculator-main">

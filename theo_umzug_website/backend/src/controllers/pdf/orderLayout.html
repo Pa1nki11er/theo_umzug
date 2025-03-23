@@ -5,8 +5,10 @@
     <meta charset="UTF-8" />
     <title>[orderLabel]</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Exo 2", sans-serif;
             margin: 40px;
             color: #333;
         }
@@ -113,17 +115,34 @@
     </div>
     <div class="clearfix"></div>
 
+    <div>
+        [transportInfo]
+    </div>
+
+    <div>
+        <p>[oldApartament]</p>
+    </div>
     <!-- Old Apartament Table -->
     <table>
-        <thead>
-            <tr>
-                <th>[item]</th>
-                <th>[quantity]</th>
-                <th>[unitPrice] €</th>
-                <th>[totalUnitPrice] €</th>
-            </tr>
-        </thead>
         <tbody>
+            <tr>
+                <td>[floorOldApartament]: [floorOldApartamentNum] </td>
+                <td>[distanceToTruckOldApartament]: [distanceToTruckOldApartamentNum]</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <p>[newApartament]</p>
+    </div>
+
+    <!-- New Apartament Table -->
+    <table>
+        <tbody>
+            <tr>
+                <td>[floorNewApartament]: [floorNewApartamentNum]</td>
+                <td>[distanceToTruckNewApartament]: [distanceToTruckNewApartamentNum]</td>
+            </tr>
         </tbody>
     </table>
 

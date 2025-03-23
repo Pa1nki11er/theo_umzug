@@ -22,8 +22,17 @@ const Navigation = () => {
   useEffect(() => {
     const getFurnitureList = async () => {
       try {
-        const response = await axios.post("/api/furniture", {data});
-        setFurnitureList(response.data); // Данные уже распарсены
+        // const response = await axios.post("/api/furniture", {data});
+        const response = await fetch("/api/furniture", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({data}),
+        });
+        
+        const result = await response.json(); // Parse the JSON
+        setFurnitureList(result);
       } catch (error) {
         console.error("Ошибка загрузки данных:", error);
       }

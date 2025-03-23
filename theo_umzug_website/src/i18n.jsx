@@ -1,4 +1,4 @@
-import i18n from "i18next";
+import i18n, { t } from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { or } from "ajv/dist/compile/codegen";
@@ -51,11 +51,10 @@ const resources = {
         loadPoint: "Пункт завантаження",
         unloadPoint: "Пункт розвантаження",
         floor: "Поверх",
-        distanceLoadingToUnloading:
-          "Відстань від пункту загрузи до пунтку вигрузки",
+        distanceLoadingToUnloading: "Відстань від пункту загрузи до пунтку вигрузки",
         distanceToTruck: "Відстань від входу до вантажівки",
         orderList: "Список замовлення",
-        addPosition: "Додайте позицію",
+        addPosition: "Додайте позицію!",
         distance: "Відстань",
         floors: {
           ground: "Перший поверх",
@@ -73,6 +72,11 @@ const resources = {
         unitPrice: "Ціна за одиницю",
         totalUnitPrice: "Загальна ціна",
         issueDate: "Дата видачі",
+        distanceToTruck: "Відстань від входу до вантажівки",
+        floor: "Поверх",
+        loadPoint: "Пункт завантаження",
+        unloadPoint: "Пункт розвантаження",
+        transportInfo: "Інформація про транспортування",
       },
     },
   },
@@ -146,6 +150,11 @@ const resources = {
         unitPrice: "Unit Price",
         totalUnitPrice: "Total Price",
         issueDate: "Issue Date",
+        floor: "Floor",
+        distanceToTruck: "Distance from entrance to truck",
+        loadPoint: "Loading Point",
+        unloadPoint: "Unloading Point",
+        transportInfo: "Transportation Information",
       },
     },
   },
@@ -219,6 +228,11 @@ const resources = {
         unitPrice: "Stückpreis",
         totalUnitPrice: "Gesamtpreis",
         issueDate: "Ausgabedatum",
+        floor: "Etage",
+        distanceToTruck: "Entfernung vom Eingang zum LKW",
+        loadPoint: "Ladepunkt",
+        unloadPoint: "Entladepunkt",
+        transportInfo: "Transportinformationen",
       },
     },
   },
@@ -273,7 +287,7 @@ const resources = {
           "Расстояние от пункта загрузки до пункта выгрузки",
         distanceToTruck: "Расстояние от входа до грузовика",
         orderList: "Список заказов",
-        addPosition: "Добавьте позицию",
+        addPosition: "Добавьте позицию!",
         distance: "Расстояние",
         floors: {
           ground: "Первый этаж",
@@ -291,6 +305,11 @@ const resources = {
         unitPrice: "Цена за единицу",
         totalUnitPrice: "Общая цена",
         issueDate: "Дата выдачи",
+        floor: "Этаж",
+        distanceToTruck: "Расстояние от входа до грузовика",
+        loadPoint: "Пункт загрузки",
+        unloadPoint: "Пункт выгрузки",
+        transportInfo: "Информация о транспортировке",
       },
     },
   },

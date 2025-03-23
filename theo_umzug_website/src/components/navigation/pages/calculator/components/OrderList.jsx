@@ -23,7 +23,7 @@ const orderListSumStyle = {
   width: "50vw",
   textAlign: "start",
   borderRadius: "5px",
-  fontSize: "1.2em",
+  fontSize: "1.0em",
 };
 
 let itemList = "";
@@ -33,13 +33,21 @@ const OrderList = ({ items, onChange }) => {
   const [loadingFloorCoeff, setLoadingFloorCoeff] = useState(0);
   const [unloadingFloorCoeff, setUnloadingFloorCoeff] = useState(0);
   const [loadingDistance, setLoadingDistance] = useState(0);
+  const [statusLoadingDistance, setStatusLoadingDistance] = useState(0);
   const [unloadingDistance, setUnloadingDistance] = useState(0);
+  const [statusUnloadingDistance, setStatusUnloadingDistance] = useState(0);
   const [distanceBetween, setDistanceBetween] = useState(0);
+  const [statusDistanceBetween, setStatusDistanceBetween] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const { t, i18n } = useTranslation();
-
+  const [loadingFloor, setLoadingFloor] = useState("");
+  const [statusLoadingFloor, setStatusLoadingFloor] = useState("");
+  const [unloadingFloor, setUnloadingFloor] = useState("");
+  const [statusUnloadingFloor, setStatusUnloadingFloor] = useState("");
+  const [colorAddPosition, setColorAddPosition] = useState("black");
   // Основные итоги (вес, объем, базовая цена)
   const [totals, setTotals] = useState({ weight: 0, volume: 0, price: 200 });
+  let itemList;
 
   const oldApartmentFloors = [
     {
@@ -132,47 +140,58 @@ const OrderList = ({ items, onChange }) => {
   }, [items]);
 
   const handleItemCountChange = (idKey, newCount) => {
-    
     if (newCount <= 0) {
       console.log("Удаляем элемент с idKey:", idKey);
       // Remove the item with the matching key
-      const updatedItems = items.filter(item => item.key !== idKey);
+      const updatedItems = items.filter((item) => item.key !== idKey);
       console.log("updatedItems:", updatedItems);
       onChange && onChange(updatedItems);
       return;
     }
-    const updatedItems = items.map(item =>
+    const updatedItems = items.map((item) =>
       item.key === idKey ? { ...item, count: newCount } : item
     );
     console.log("updatedItems:", updatedItems);
     onChange && onChange(updatedItems);
   };
-  
 
   const createPDF = async () => {
     setLoading(true);
+    let isValid = validateInputs();
+    if (!isValid) {
+      setLoading(false);
+      return;
+    }
 
     let data = {
       items: items,
       totals: totals,
-      // loadingFloorCoeff: loadingFloorCoeff,
-      // unloadingFloorCoeff: unloadingFloorCoeff,
+      loadingFloor: loadingFloor,
+      unloadingFloor: unloadingFloor,
       loadingDistance: loadingDistance,
       unloadingDistance: unloadingDistance,
       distanceBetween: distanceBetween,
       currentLang: i18n.language,
-      translation:t("orderPDF", { returnObjects: true }),
+      translation: t("orderPDF", { returnObjects: true }),
     };
 
     try {
-      const response = await axios.post(
-        "/api/orderPDF",
-        {data},
-        { responseType: "blob" }
-      );
-      const file = new Blob([response.data], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      if (response.data) {
+      // const response = await axios.post(
+      //   "/api/orderPDF",
+      //   { data },
+      //   { responseType: "blob" }
+      // );
+      const response = await fetch("/api/orderPDF", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data }),
+      });
+      // const file = new Blob([response.data], { type: "application/pdf" });
+      const blob = await response.blob(); 
+      const fileURL = URL.createObjectURL(blob);
+      if (blob) {
         setLoading(false);
       }
       window.open(fileURL, "_blank");
@@ -181,13 +200,36 @@ const OrderList = ({ items, onChange }) => {
       console.error("Ошибка загрузки PDF:", error);
     }
   };
-
+  const validateInputs = () => {
+    const inputs = [
+      { value: loadingDistance, status: setStatusLoadingDistance },
+      { value: unloadingDistance, status: setStatusUnloadingDistance },
+      { value: distanceBetween, status: setStatusDistanceBetween },
+      { value: loadingFloor, status: setStatusLoadingFloor },
+      { value: unloadingFloor, status: setStatusUnloadingFloor },
+    ];
+    let isValid = true;
+    inputs.forEach((input) => {
+      if (input.value === 0 || input.value === "") {
+        console.log("input.value", input.value);
+        input.status("error");
+        isValid = false;
+      } else {
+        // Например, если значение корректное, сбрасываем ошибку
+        input.status("");
+      }
+    });
+    if(items.length === 0) {
+      isValid = false;
+      setColorAddPosition("red");
+    }
+    return isValid;
+  };
   // При маппинге передаем обновлённое значение и onChange
-  let itemList;
   if (Array.isArray(items) && items.length > 0) {
     itemList = items.map((item, index) => (
       <NumberInput
-        key={index}
+        key={item.key}
         iconName={item.iconname}
         title={item.label}
         value={item.count}
@@ -197,7 +239,7 @@ const OrderList = ({ items, onChange }) => {
     ));
   } else {
     itemList = (
-      <Title level={3} style={{ padding: "0px", margin: "0px" }}>
+      <Title level={3} id="addPostionLabel" style={{ padding: "0px", margin: "0px", color: colorAddPosition }}>
         {t("calculator.addPosition")}
       </Title>
     );
@@ -268,11 +310,13 @@ const OrderList = ({ items, onChange }) => {
               title={t("calculator.floor")}
               options={oldApartmentFloors}
               placeholder={t("calculator.floor")}
-              onChange={(value) => {
+              onChange={(value, option) => {
                 // value — выбранный коэффициент (например, 0.4 для 2-го этажа)
                 setLoadingFloorCoeff(value);
+                setLoadingFloor(option.label);
               }}
               idElement="loadingFloor"
+              status={statusLoadingFloor}
             />
             <ApartmentNumberInput
               title={t("calculator.distanceToTruck")}
@@ -282,6 +326,7 @@ const OrderList = ({ items, onChange }) => {
                 setLoadingDistance(Number(value));
               }}
               step={5}
+              status={statusLoadingDistance}
             />
           </Flex>
           <Divider
@@ -304,10 +349,12 @@ const OrderList = ({ items, onChange }) => {
               title={t("calculator.floor")}
               options={oldApartmentFloors}
               placeholder={t("calculator.floor")}
-              onChange={(value) => {
+              onChange={(value, option) => {
                 setUnloadingFloorCoeff(value);
+                setUnloadingFloor(option.label);
               }}
-              idElement="loadingFloor"
+              idElement="unloadingFloor"
+              status={statusUnloadingFloor}
             />
             <ApartmentNumberInput
               title={t("calculator.distanceToTruck")}
@@ -316,6 +363,7 @@ const OrderList = ({ items, onChange }) => {
                 setUnloadingDistance(Number(value));
               }}
               step={5}
+              status={statusUnloadingDistance}
             />
           </Flex>
           <Divider
@@ -332,6 +380,7 @@ const OrderList = ({ items, onChange }) => {
                 setDistanceBetween(Number(value));
               }}
               step={5}
+              status={statusDistanceBetween}
             />
           </Flex>
         </Flex>
