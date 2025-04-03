@@ -28,7 +28,7 @@ const orderListSumStyle = {
 
 let itemList = "";
 
-const OrderList = ({ items, onChange }) => {
+const OrderList = ({ items, onChange, isOrder }) => {
   // Состояния для дополнительных коэффициентов
   const [loadingFloorCoeff, setLoadingFloorCoeff] = useState(0);
   const [unloadingFloorCoeff, setUnloadingFloorCoeff] = useState(0);
@@ -176,11 +176,6 @@ const OrderList = ({ items, onChange }) => {
     };
 
     try {
-      // const response = await axios.post(
-      //   "/api/orderPDF",
-      //   { data },
-      //   { responseType: "blob" }
-      // );
       const response = await fetch("/api/orderPDF", {
         method: "POST",
         headers: {
@@ -189,7 +184,7 @@ const OrderList = ({ items, onChange }) => {
         body: JSON.stringify({ data }),
       });
       // const file = new Blob([response.data], { type: "application/pdf" });
-      const blob = await response.blob(); 
+      const blob = await response.blob();
       const fileURL = URL.createObjectURL(blob);
       if (blob) {
         setLoading(false);
@@ -219,7 +214,7 @@ const OrderList = ({ items, onChange }) => {
         input.status("");
       }
     });
-    if(items.length === 0) {
+    if (items.length === 0) {
       isValid = false;
       setColorAddPosition("red");
     }
@@ -239,12 +234,106 @@ const OrderList = ({ items, onChange }) => {
     ));
   } else {
     itemList = (
-      <Title level={3} id="addPostionLabel" style={{ padding: "0px", margin: "0px", color: colorAddPosition }}>
+      <Title
+        level={3}
+        id="addPostionLabel"
+        style={{ padding: "0px", margin: "0px", color: colorAddPosition }}
+      >
         {t("calculator.addPosition")}
       </Title>
     );
   }
-
+  if (isOrder) {
+    let orderModule = () => (
+      <Flex gap="small" align="center" vertical>
+        <Title
+          level={3}
+          style={{
+            padding: "0px",
+            margin: "0px",
+          }}
+        >
+          Особисті данні
+        </Title>
+        <Flex gap="small" justify="space-around">
+          <ApartmentInputField
+            title={t("calculator.floor")}
+            options={oldApartmentFloors}
+            placeholder={t("calculator.floor")}
+            onChange={() => {
+ 
+            }}
+            idElement="loadingFloor"
+            status={statusLoadingFloor}
+          />
+          <ApartmentNumberInput
+            title={t("calculator.distanceToTruck")}
+            placeholder={t("calculator.distance")}
+            onChange={(value) => {
+              // Приводим значение к числу, если оно приходит как строка
+              setLoadingDistance(Number(value));
+            }}
+            step={5}
+            status={statusLoadingDistance}
+          />
+        </Flex>
+        <Divider
+          style={{
+            borderColor: "black",
+            margin: "0px",
+          }}
+        />
+        <Title
+          level={3}
+          style={{
+            padding: "0px",
+            margin: "0px",
+          }}
+        >
+          {t("calculator.unloadPoint")}
+        </Title>
+        <Flex>
+          <ApartmentInputSelect
+            title={t("calculator.floor")}
+            options={oldApartmentFloors}
+            placeholder={t("calculator.floor")}
+            onChange={(value, option) => {
+              setUnloadingFloorCoeff(value);
+              setUnloadingFloor(option.label);
+            }}
+            idElement="unloadingFloor"
+            status={statusUnloadingFloor}
+          />
+          <ApartmentNumberInput
+            title={t("calculator.distanceToTruck")}
+            placeholder={t("calculator.distance")}
+            onChange={(value) => {
+              setUnloadingDistance(Number(value));
+            }}
+            step={5}
+            status={statusUnloadingDistance}
+          />
+        </Flex>
+        <Divider
+          style={{
+            borderColor: "black",
+            margin: "0px",
+          }}
+        />
+        <Flex>
+          <ApartmentNumberInput
+            title={t("calculator.distanceLoadingToUnloading")}
+            placeholder={t("calculator.distance")}
+            onChange={(value) => {
+              setDistanceBetween(Number(value));
+            }}
+            step={5}
+            status={statusDistanceBetween}
+          />
+        </Flex>
+      </Flex>
+    );
+  }
   return (
     <Flex gap="small" vertical style={orderListStyle} id="orderList">
       <Title level={3}>

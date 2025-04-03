@@ -1,6 +1,7 @@
 import React from "react";
 import "./Home.css"; // Імпорт стилів
 import cardImage from "./img/card.jpg"; // Зображення для "Про компанію"
+import Contact from "./../contact/Contact.jsx"; // Зображення для "Про компанію"
 import { Button, Dropdown, Space, Input,  Flex } from 'antd';
 import { useTranslation } from 'react-i18next';
 
@@ -50,18 +51,7 @@ const Home = () => {
         </ul>
       </section>
       <section className="contact-section">
-        <div className="contact-form">
-          <h2>{t('homepage.contactUs')}</h2>
-          <form className="cf">
-              <Input className="inputfield" showCount maxLength={20} placeholder={t('homepage.inputContactUsName')}/>
-              <Input className="inputfield" showCount maxLength={40} type="email" placeholder={t('homepage.inputContactUsEmail')} />
-              <Input className="inputfield" showCount maxLength={20} placeholder={t('homepage.inputContactUsSubject')} />
-              <Flex vertical gap={32}>
-                <TextArea className="inputfield" showCount maxLength={300} placeholder={t('homepage.inputContactUsMessage')} />
-              </Flex>
-            <input className="btnSend" type="button" value={t('homepage.inputContactUsSend')} id="input-submit" />
-          </form>
-        </div>
+          <Contact></Contact>
       </section>
       {/* Футер */}
       <footer className="home-footer">

@@ -41,6 +41,8 @@ const resources = {
         inputContactUsSubject: "Тема",
         inputContactUsMessage: "Повідомлення",
         inputContactUsSend: "Відправити",
+        emailSended:"Емейл відправлено!",
+
       },
       calculator: {
         furnitureList: "Каталог меблів",
@@ -117,6 +119,7 @@ const resources = {
         inputContactUsSubject: "Subject",
         inputContactUsMessage: "Message",
         inputContactUsSend: "Send",
+        emailSended:"E-Mail sended!",
       },
       calculator: {
         furnitureList: "Furniture Catalog",
@@ -196,6 +199,7 @@ const resources = {
         inputContactUsSubject: "Betreff",
         inputContactUsMessage: "Nachricht",
         inputContactUsSend: "Senden",
+        emailSended:"E-Mail gesendet!",
       },
       calculator: {
         furnitureList: "Möbelkatalog",
@@ -273,6 +277,7 @@ const resources = {
         inputContactUsSubject: "Тема",
         inputContactUsMessage: "Сообщение",
         inputContactUsSend: "Отправить",
+        emailSended:"Письмо отправлено!",
       },
       calculator: {
         furnitureList: "Каталог мебели",

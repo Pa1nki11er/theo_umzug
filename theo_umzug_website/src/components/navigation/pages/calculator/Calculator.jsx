@@ -34,7 +34,7 @@ const range = (start, end) => {
   return result;
 };
 
-const Calculator = ({furnitureList}) => {
+const Calculator = ({furnitureList, isOrder}) => {
   const [selectedItems, addItem] = useState([]);
   // const [furnitureList, setFurnitureList] = useState([]);
 
@@ -88,7 +88,7 @@ const Calculator = ({furnitureList}) => {
             style={boxStyle}
           >
             <FurnitureMenu onClick={selected} furnitureList={furnitureList} />
-            <OrderList items={selectedItems} furnitureList={furnitureList} onChange={addItem}/>
+            <OrderList items={selectedItems} furnitureList={furnitureList} onChange={addItem} isOrder={isOrder}/>
           </Flex>
         </div>
       </div>
