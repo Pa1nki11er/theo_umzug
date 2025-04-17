@@ -23,3 +23,8 @@
     color: darkorange;
     cursor: pointer;
 }
+
+.liStyle:active {
+    color: darkorange;
+    text-decoration: underline;
+}

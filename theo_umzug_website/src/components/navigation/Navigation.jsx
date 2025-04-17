@@ -60,9 +60,9 @@ const Navigation = () => {
           <li className='liStyle'>
             <Link to="/" className='linkStyle'>{t('navigation.home')}</Link>
           </li>
-          <li className='liStyle'>
+          {/* <li className='liStyle'>
             <Link to="/order" className='linkStyle'>{t('navigation.order')}</Link>
-          </li>
+          </li> */}
           <li className="liStyle">
             <Link to="/contacts" className="linkStyle">{t('navigation.contacts')}</Link>
           </li>

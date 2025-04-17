@@ -40,8 +40,8 @@ const Contact = () => {
     }
 
     let data = {
-      to: userEmail,
-      name: userName,
+      userEmail: userEmail,
+      userName: userName,
       subject: subject,
       text: message,
     };
@@ -59,6 +59,7 @@ const Contact = () => {
     
     success();
     btnSend.style.backgroundColor = "#ff9800";
+    btnSend.removeAttribute("disabled");
     console.log("Email sent!");
   };
 

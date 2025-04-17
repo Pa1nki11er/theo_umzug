@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Input, Typography, Select, Menu, Divider } from "antd";
+import {
+  Flex,
+  Input,
+  Typography,
+  Select,
+  Menu,
+  Divider,
+  DatePicker,
+} from "antd";
 import NumberInput from "./NumberInput.jsx";
 import ApartmentInputSelect from "./ApartmentInputSelect.jsx";
 import ApartmentNumberInput from "./ApartmentNumberInput.jsx";
+import InputField from "./InputField.jsx";
 import CustomButton from "../../../../button/CustomButton.jsx";
 import "./theme.css";
 import { useTranslation } from "react-i18next";
@@ -17,13 +26,15 @@ const orderListStyle = {
   borderRadius: "5px",
   padding: "0px",
   margin: "0px",
+  width: "50vw",
 };
+
 const orderListSumStyle = {
   backgroundColor: "white",
   width: "50vw",
   textAlign: "start",
   borderRadius: "5px",
-  fontSize: "1.0em",
+  fontSize: "1em",
 };
 
 let itemList = "";
@@ -45,9 +56,31 @@ const OrderList = ({ items, onChange, isOrder }) => {
   const [unloadingFloor, setUnloadingFloor] = useState("");
   const [statusUnloadingFloor, setStatusUnloadingFloor] = useState("");
   const [colorAddPosition, setColorAddPosition] = useState("black");
+  const [isOrderModule, setOrderModule] = useState("none");
   // Основные итоги (вес, объем, базовая цена)
   const [totals, setTotals] = useState({ weight: 0, volume: 0, price: 200 });
   let itemList;
+
+  const range = (start, end) => {
+    const result = [];
+    for (let i = start; i < end; i++) {
+      result.push(i);
+    }
+    return result;
+  };
+
+  const disabledTime = () => ({
+    disabledHours: () => [0, 1, 2, 3, 4, 5, 6, 22, 23],
+    disabledMinutes: () => [
+      ...range(1, 10),
+      ...range(11, 20),
+      ...range(21, 30),
+      ...range(31, 40),
+      ...range(41, 50),
+      ...range(51, 60),
+    ],
+    disabledSeconds: () => range(1, 61),
+  });
 
   const oldApartmentFloors = [
     {
@@ -195,6 +228,7 @@ const OrderList = ({ items, onChange, isOrder }) => {
       console.error("Ошибка загрузки PDF:", error);
     }
   };
+
   const validateInputs = () => {
     const inputs = [
       { value: loadingDistance, status: setStatusLoadingDistance },
@@ -220,6 +254,11 @@ const OrderList = ({ items, onChange, isOrder }) => {
     }
     return isValid;
   };
+
+  const handleOrderModule = () => {
+    isOrderModule === "none" ? setOrderModule("block") : setOrderModule("none");
+  };
+
   // При маппинге передаем обновлённое значение и onChange
   if (Array.isArray(items) && items.length > 0) {
     itemList = items.map((item, index) => (
@@ -243,97 +282,7 @@ const OrderList = ({ items, onChange, isOrder }) => {
       </Title>
     );
   }
-  if (isOrder) {
-    let orderModule = () => (
-      <Flex gap="small" align="center" vertical>
-        <Title
-          level={3}
-          style={{
-            padding: "0px",
-            margin: "0px",
-          }}
-        >
-          Особисті данні
-        </Title>
-        <Flex gap="small" justify="space-around">
-          <ApartmentInputField
-            title={t("calculator.floor")}
-            options={oldApartmentFloors}
-            placeholder={t("calculator.floor")}
-            onChange={() => {
- 
-            }}
-            idElement="loadingFloor"
-            status={statusLoadingFloor}
-          />
-          <ApartmentNumberInput
-            title={t("calculator.distanceToTruck")}
-            placeholder={t("calculator.distance")}
-            onChange={(value) => {
-              // Приводим значение к числу, если оно приходит как строка
-              setLoadingDistance(Number(value));
-            }}
-            step={5}
-            status={statusLoadingDistance}
-          />
-        </Flex>
-        <Divider
-          style={{
-            borderColor: "black",
-            margin: "0px",
-          }}
-        />
-        <Title
-          level={3}
-          style={{
-            padding: "0px",
-            margin: "0px",
-          }}
-        >
-          {t("calculator.unloadPoint")}
-        </Title>
-        <Flex>
-          <ApartmentInputSelect
-            title={t("calculator.floor")}
-            options={oldApartmentFloors}
-            placeholder={t("calculator.floor")}
-            onChange={(value, option) => {
-              setUnloadingFloorCoeff(value);
-              setUnloadingFloor(option.label);
-            }}
-            idElement="unloadingFloor"
-            status={statusUnloadingFloor}
-          />
-          <ApartmentNumberInput
-            title={t("calculator.distanceToTruck")}
-            placeholder={t("calculator.distance")}
-            onChange={(value) => {
-              setUnloadingDistance(Number(value));
-            }}
-            step={5}
-            status={statusUnloadingDistance}
-          />
-        </Flex>
-        <Divider
-          style={{
-            borderColor: "black",
-            margin: "0px",
-          }}
-        />
-        <Flex>
-          <ApartmentNumberInput
-            title={t("calculator.distanceLoadingToUnloading")}
-            placeholder={t("calculator.distance")}
-            onChange={(value) => {
-              setDistanceBetween(Number(value));
-            }}
-            step={5}
-            status={statusDistanceBetween}
-          />
-        </Flex>
-      </Flex>
-    );
-  }
+
   return (
     <Flex gap="small" vertical style={orderListStyle} id="orderList">
       <Title level={3}>
@@ -358,13 +307,22 @@ const OrderList = ({ items, onChange, isOrder }) => {
           <span>
             {t("calculator.weight")} {totals.weight} kg
           </span>
-          <Flex align="center" justify="flex-end">
+          <Flex gap="small" align="center" justify="flex-end">
             <CustomButton
               title="PDF"
               onClick={createPDF}
               color="danger"
               isLoading={isLoading}
               size={"large"}
+              iconType="pdf"
+            />
+            <CustomButton
+              title="Make Order"
+              onClick={handleOrderModule}
+              color="primary"
+              isLoading={isLoading}
+              size={"large"}
+              iconType="text"
             />
           </Flex>
         </Flex>
@@ -385,6 +343,58 @@ const OrderList = ({ items, onChange, isOrder }) => {
         }}
       >
         <Flex gap="small" align="center" vertical>
+          <div className="orderModule" style={{ display: isOrderModule }}>
+            <Flex gap="small" align="center" vertical>
+              <Title
+                level={3}
+                style={{
+                  padding: "0px",
+                  margin: "0px",
+                }}
+              >
+                {t("orderPDF.personalData")}
+              </Title>
+              <Flex wrap gap="small" justify="space-around" align="center">
+                <InputField
+                  title={t("homepage.inputContactUsName")}
+                  placeholder={t("homepage.inputContactUsName")}
+                  onChange={() => {}}
+                />
+                <InputField
+                  title={t("homepage.inputContactUsEmail")}
+                  placeholder={t("homepage.inputContactUsEmail")}
+                  onChange={() => {}}
+                />
+                <InputField
+                  title={t("orderPDF.phoneNumber")}
+                  placeholder={t("orderPDF.phoneNumber")}
+                  onChange={() => {}}
+                />
+                <DatePicker
+                  placeholder="Дата перевезення"
+                  showTime
+                  disabledTime={disabledTime}
+                />
+                <InputField
+                  title={t("orderPDF.adressFrom")}
+                  placeholder={t("orderPDF.addressFrom")}
+                  onChange={() => {}}
+                />
+                <InputField
+                  title={t("orderPDF.adressTo")}
+                  placeholder={t("orderPDF.orderDate")}
+                  onChange={() => {}}
+                />
+              </Flex>
+            </Flex>
+            <Divider
+              style={{
+                borderColor: "black",
+                marginTop: "10px",
+              }}
+            />
+          </div>
+
           <Title
             level={3}
             style={{

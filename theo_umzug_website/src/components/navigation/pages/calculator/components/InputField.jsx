@@ -6,6 +6,7 @@ import { MailOutlined } from '@ant-design/icons';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import { PhoneOutlined } from '@ant-design/icons';
 import Icon from "../../../../icon/Icon.jsx";
+const { Paragraph } = Typography;
 
 
 const InputField = ({ title, maxChar, iconName = "" }) => {
@@ -18,7 +19,7 @@ const InputField = ({ title, maxChar, iconName = "" }) => {
 
   return (
     <div className="input-field">
-      <Typography.Title level={5}>
+      <Paragraph>
         {/* <Icon
           iconName={iconName}
           alt={"icon"}
@@ -30,7 +31,7 @@ const InputField = ({ title, maxChar, iconName = "" }) => {
           }}
         />  */}
         {title}
-      </Typography.Title>
+      </Paragraph>
       <Input
         count={{
           show: true,

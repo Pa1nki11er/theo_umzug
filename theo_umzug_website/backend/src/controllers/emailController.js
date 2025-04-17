@@ -2,8 +2,8 @@ import nodemailer from "nodemailer";
 
 const emailController = async (req, res) => {
     try {
-        const { to, subject, text } = req.body.data;
-
+        let { userEmail, subject, text, userName } = req.body.data;
+        text = `User ${userName}, E-Mail: ${userEmail} has sent a message: ${text}`; // Append user email to the text
         // Create a transporter
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -16,7 +16,7 @@ const emailController = async (req, res) => {
         // Email options
         const mailOptions = {
             from: process.env.EMAIL_USER,
-            to,
+            to: process.env.EMAIL_USER,
             subject,
             text
         };

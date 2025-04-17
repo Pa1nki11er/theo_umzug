@@ -1,10 +1,24 @@
-import React, { useState } from "react";
-import { DownloadOutlined, PrinterOutlined, FilePdfOutlined } from "@ant-design/icons";
-import { Button, Divider, Flex, Radio } from "antd";
+import React from "react";
+import { DownloadOutlined, PrinterOutlined, FilePdfOutlined, FileTextOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
-const CustomButton = ({title, size, onClick, color, isLoading}) => {
+const iconMap = {
+  download: <DownloadOutlined />,
+  print: <PrinterOutlined />,
+  pdf: <FilePdfOutlined />,
+  text: <FileTextOutlined />,
+};
+
+const CustomButton = ({ title, size, onClick, color, isLoading, iconType }) => {
   return (
-    <Button icon={<FilePdfOutlined />} onClick={onClick} size={size} color={color}  variant="solid" loading={isLoading}>
+    <Button
+      icon={iconMap[iconType] || null}
+      onClick={onClick}
+      size={size}
+      color={color}
+      variant="solid"
+      loading={isLoading}
+    >
       {title}
     </Button>
   );

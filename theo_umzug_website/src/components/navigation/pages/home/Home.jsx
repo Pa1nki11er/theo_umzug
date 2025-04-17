@@ -6,6 +6,11 @@ import { Button, Dropdown, Space, Input,  Flex } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 const { TextArea } = Input;
+const handleContact = () => {
+  const element = document.querySelector(".contact-section");
+  if (!element) return;
+  element.scrollIntoView({ behavior: "smooth" });
+};
 
 const Home = () => {
   const { t, i18n } = useTranslation();
@@ -16,14 +21,14 @@ const Home = () => {
       <header className="home-header">
         <h1>{t('homepage.welcome')}</h1>
         <p>{t('homepage.priority')}</p>
-        <button className="action-button">{t('homepage.btnContactUs')}</button>
+        <button className="action-button" onClick={handleContact}>{t('homepage.btnContactUs')}</button>
       </header>
 
       {/* Секція "Про компанію" */}
       <section className="about-section">
         <h2>{t('homepage.aboutCompany')}</h2>
         <p>{t('homepage.companyDescription')}</p>
-        <img src={cardImage} alt="Про компанію" />
+        <img src={cardImage} alt={t('homepage.aboutCompany')} />
       </section>
 
       {/* Секція послуг */}
